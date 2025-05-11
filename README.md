@@ -53,7 +53,6 @@ As part of our academic project at Bahria University (Islamabad Campus), we deve
 
 ## ✅ Conclusion
 
-This system helps simulate how a basic bank backend might operate. While simplified, it includes important features like security, accuracy, and efficiency in managing customer accounts and transactions. It's a great project to understand object-oriented programming and practical C++ applications.
+This system helps simulate how a basic bank backend might operate. While simplified, it includes important features like security, accuracy, and efficiency in managing customer accounts and transactions. It's a great project for developing understanding of C++ .
 
----
 
