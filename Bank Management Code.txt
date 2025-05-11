@@ -1,0 +1,365 @@
+#include <iostream>
+
+using namespace std;
+
+struct User {
+    string accountNumber;
+    double balance;
+};
+
+void printCentered(string text) {
+    int width = 63; // Total width of the console 
+    int padding = (width - text.length()) / 2;
+    cout << string(padding, ' ') << text << endl;
+}
+
+
+int createAccount() {
+    cout << "\033[1;36m";
+    int accountNumber;
+
+    double password;
+
+    string customerName, customerAddress, customerContact;
+
+    double accountBalance;
+
+    printCentered("Create Account");
+    cout << endl;
+
+    cout << "Enter Customer Name: " << endl;
+    cin >> customerName;
+
+    cout << "Enter Customer Address: " << endl;
+    cin >> customerAddress;
+
+    cout << "Enter Customer Contact: " << endl;
+    cin >> customerContact;
+
+    cout << "Enter Account Balance: " << endl;
+    cin >> accountBalance;
+
+    cout << "\n\033[1;35m";
+    printCentered("New Account Created Successfully!");
+
+    cout << "						Customer Name: " << customerName << endl;
+
+    cout << "						Customer Address: " << customerAddress << endl;
+
+    cout << "						Customer Contact: " << customerContact << endl;
+
+    cout << "						Account Balance: " << accountBalance << endl;
+
+    return 0;
+}
+void depositFunds(User users[], int numUsers) {
+    cout << "\033[1;36m";
+    string accountNumber;
+    double amount;
+
+    printCentered("Deposit Funds");
+    cout << endl;
+    cout << "Enter your account number: ";
+    cin >> accountNumber;
+
+    bool accountFound = false;
+    for (int i = 0; i < numUsers; i++) {
+        if (users[i].accountNumber == accountNumber) {
+            accountFound = true;
+
+            cout << "Enter the amount to deposit: ";
+            cin >> amount;
+
+            if (amount <= 0) {
+                cout << "Invalid amount. Please try again.\n";
+                return;
+            }
+
+            users[i].balance += amount;
+
+            printCentered("Deposit successful!");
+            cout << endl;
+            cout << "New account balance: " << users[i].balance << endl;
+
+
+            break;
+        }
+    }
+
+    if (!accountFound) {
+        printCentered("Account not found. Please check your account number.");
+    }
+}
+
+void withdrawFunds(User users[], int numUsers) {
+    cout << "\033[1;36m";
+    string accountNumber;
+    double amount;
+
+    printCentered("Withdraw Funds");
+    cout << endl;
+    cout << "Enter your account number: ";
+    cin >> accountNumber;
+
+    bool accountFound = false;
+    for (int i = 0; i < numUsers; i++) {
+        if (users[i].accountNumber == accountNumber) {
+            accountFound = true;
+
+            cout << "Enter the amount to withdraw: ";
+            cin >> amount;
+
+            if (amount <= 0) {
+                cout << "Invalid amount. Please try again.\n";
+                return;
+            }
+
+            if (amount > users[i].balance) {
+                cout << "Insufficient balance. Withdrawal not possible.\n";
+                return;
+            }
+
+            users[i].balance -= amount;
+
+            cout << "Withdrawal successful!\n";
+            cout << "New account balance: " << users[i].balance << endl;
+
+
+
+            break;
+        }
+    }
+
+    if (!accountFound) {
+        cout << "Account not found. Please check your account number.\n";
+    }
+}
+
+void checkAccountBalance(User users[], int numUsers) {
+    cout << "\033[1;36m";
+    string accountNumber;
+
+    printCentered("Check Account Funds");
+    cout << endl;
+    cout << "Enter your account number: ";
+    cin >> accountNumber;
+
+    bool accountFound = false;
+    for (int i = 0; i < numUsers; i++) {
+        if (users[i].accountNumber == accountNumber) {
+            accountFound = true;
+
+            cout << "Account balance: " << users[i].balance << endl;
+            break;
+        }
+    }
+
+    if (!accountFound) {
+        cout << "Account not found. Please check your account number.\n";
+    }
+}
+
+void transferFunds(User users[], int numUsers) {
+    string senderAccountNumber;
+    string receiverAccountNumber;
+    double amount;
+
+    printCentered("Transfer Funds");
+    cout << endl;
+    cout << "Enter your account number: ";
+    cin >> senderAccountNumber;
+
+    bool senderAccountFound = false;
+    for (int i = 0; i < numUsers; i++) {
+        if (users[i].accountNumber == senderAccountNumber) {
+            senderAccountFound = true;
+
+            cout << "Enter the receiver's account number: ";
+            cin >> receiverAccountNumber;
+
+            bool receiverAccountFound = false;
+            for (int j = 0; j < numUsers; j++) {
+                if (users[j].accountNumber == receiverAccountNumber) {
+                    receiverAccountFound = true;
+
+                    cout << "Enter the amount to transfer: ";
+                    cin >> amount;
+
+                    if (amount <= 0) {
+                        cout << "Invalid amount. Please try again.\n";
+                        return;
+                    }
+
+                    if (amount > users[i].balance) {
+                        cout << "Insufficient balance. Transfer not possible.\n";
+                        return;
+                    }
+
+                    users[i].balance -= amount;
+                    users[j].balance += amount;
+
+                    cout << "Transfer successful!\n";
+                    cout << "New account balance (sender): " << users[i].balance << endl;
+                    cout << "New account balance (receiver): " << users[j].balance << endl;
+
+
+
+                    break;
+                }
+            }
+
+            if (!receiverAccountFound) {
+                cout << "Receiver's account not found. Please check the account number.\n";
+                return;
+            }
+
+            break;
+        }
+    }
+
+    if (!senderAccountFound) {
+        cout << "Sender's account not found. Please check your account number.\n";
+    }
+}
+
+
+
+void deleteAccount(User users[], int& numUsers) {
+    string accountNumber;
+
+    printCentered("Delete Account");
+    cout << endl;
+    cout << "Enter your account number: ";
+    cin >> accountNumber;
+
+    bool accountFound = false;
+    for (int i = 0; i < numUsers; i++) {
+        if (users[i].accountNumber == accountNumber) {
+            accountFound = true;
+
+
+            for (int j = i; j < numUsers - 1; j++) {
+                users[j] = users[j + 1];
+            }
+
+            numUsers--;
+
+            cout << "Account successfully deleted.\n";
+
+
+
+            break;
+        }
+    }
+
+    if (!accountFound) {
+        cout << "Account not found. Please check your account number.\n";
+    }
+}
+
+
+int main()
+{
+
+    cout << "\033[2J\033[H";
+
+
+    cout << "\033[1;34m";
+
+
+    const int MAX_USERS = 10;
+    User users[MAX_USERS] = {
+        {"123", 1000.0},
+        {"456", 500.0},
+        {"789", 2000.0}
+    };
+    int numUsers = 3;
+
+    cout << "           \033[1;32;5m\033[6m          All Citizens Bank       \033[0m" << endl;
+    cout << "|---------------------------------------------------------------|" << endl;
+    cout << "|           \033[1;33m         Bank Management System        \033[0m|" << endl;
+    cout << "|                                                               |" << endl;
+    printCentered("\033[96m1. Create Account");
+    cout << "|                                                               |" << endl;
+    printCentered("2. Deposit Funds");
+    cout << "|                                                               |" << endl;
+    printCentered("3. Withdraw Funds");
+    cout << "|                                                               |" << endl;
+    printCentered("4. Balance Enquiry");
+    cout << "|                                                               |" << endl;
+    printCentered("5. Transfer Funds");
+    cout << "|                                                               |" << endl;
+    printCentered("6. Delete Account");
+    cout << "|                                                               |" << endl;
+    printCentered("7. Zakat\033[0m");
+    cout << "|                                                               |" << endl;
+    cout << "|---------------------------------------------------------------|" << endl;
+
+    int input;
+label: cout << "\nPress 1,2,3,4,5,6 or 7 for performing any of the above operation . Press any other key to discontinue\n" << endl;
+    cin >> input;
+
+    if (input == 1) {
+
+        createAccount();
+        goto label;
+    }
+    else if (input == 2) {
+
+        depositFunds(users, numUsers);
+        goto label;
+    }
+    else if (input == 3) {
+        withdrawFunds(users, numUsers);
+        goto label;
+
+    }
+    else if (input == 4) {
+        checkAccountBalance(users, numUsers);
+        goto label;
+    }
+    else if (input == 5) {
+        transferFunds(users, numUsers);
+        goto label;
+    }
+    else if (input == 6) {
+        deleteAccount(users, numUsers);
+        goto label;
+    }
+    else if (input == 7) {
+        string accountNumber;
+        double amount = 1;
+        const double ZAKAT_RATE = 0.025;
+
+        double zakatAmount = 0.0;
+        cout << "Calculating Zakat\n";
+        cout << "Enter your account number: ";
+        cin >> accountNumber;
+
+        bool accountFound = false;
+        for (int i = 0; i < numUsers; i++) {
+            if (users[i].accountNumber == accountNumber) {
+                accountFound = true;
+
+
+                zakatAmount = ZAKAT_RATE * users[i].balance;
+                if (amount <= 0) {
+                    cout << "Invalid amount. Please try again.\n";
+
+                }
+
+                //   users[i].balance += amount;
+                cout << "Zakat Calculated!\n";
+                cout << "The zakat calculated is:" << zakatAmount << endl;
+
+                break;
+            }
+        }
+        if (!accountFound) {
+            cout << "Account not found. Please check your account number.\n";
+        }
+        goto label;
+    }
+
+    return 0;
+}
